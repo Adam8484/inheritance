@@ -1,32 +1,14 @@
-class BaseClass {
-  constructor(value) {
-    this.value = value;
-  }
-  plus(...n) {
-    throw new Error("missing implementation");
-  }
-  get() {
-    return this.value;
-  }
-
-  minus() {
-    throw new Error("missing implementation");
-  }
-
-  multiply() {
-    throw new Error("missing implementation");
-  }
-  divide() {
-    throw new Error("missing implementation");
-  }
-  mod() {
-    throw new Error("missing implementation");
-  }
-
-  random(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
-  }
+function BaseClass(value) {
+  this.value = value;
 }
+
+BaseClass.prototype.get = function () {
+  return this.value;
+};
+
+BaseClass.prototype.random = function (min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+};
 
 class IntBuilder extends BaseClass {
   constructor(value) {
@@ -58,3 +40,44 @@ class IntBuilder extends BaseClass {
     return this;
   }
 }
+
+function StringBuilder(value) {
+  BaseClass.call(this, value);
+}
+
+StringBuilder.prototype = Object.create(BaseClass.prototype);
+
+StringBuilder.prototype.constructor = StringBuilder;
+
+StringBuilder.prototype.plus = function (...n) {
+  this.value = [this.value, ...n].join("");
+  return this;
+};
+
+StringBuilder.prototype.minus = function (n) {
+  this.value = this.value.slice(0, -n);
+  return this;
+};
+
+StringBuilder.prototype.multiply = function (n) {
+  this.value = this.value.repeat(n);
+  return this;
+};
+StringBuilder.prototype.divide = function (n) {
+  const k = Math.floor(this.value.length / n);
+  this.value = this.value.substr(1, k);
+  return this;
+};
+
+StringBuilder.prototype.remove = function (n) {
+  this.value = this.value.split(n).join("");
+  return this;
+};
+StringBuilder.prototype.sub = function (from, n) {
+  this.value = this.value.substr(from + 1, n);
+  return this;
+};
+
+const aaa = new StringBuilder("abbaaa");
+
+console.log(aaa.remove("aa").get());
