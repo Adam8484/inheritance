@@ -77,7 +77,3 @@ StringBuilder.prototype.sub = function (from, n) {
   this.value = this.value.substr(from + 1, n);
   return this;
 };
-
-const aaa = new StringBuilder("abbaaa");
-
-console.log(aaa.remove("aa").get());
